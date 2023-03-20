@@ -23,8 +23,6 @@ const Cast = () => {
       })
     }, [movieId]);
 
-    
-
     return <CastWrapper>
        { !error && cast.length > 0 ? (cast.map(({ name, id, character, profile_path }) => (
            <Item key={id}>
@@ -41,4 +39,5 @@ const Cast = () => {
 
 export default Cast;
 
-// http://localhost:3000/goit-react-hw-05-movies/movies/776835/cast
+
+

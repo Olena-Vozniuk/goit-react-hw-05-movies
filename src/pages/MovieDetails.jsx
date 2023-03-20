@@ -27,6 +27,7 @@ const MovieDetails = () => {
       })
     }, [movieId]);
      
+
     const fixedScore = (movieDetails.vote_average * 10).toFixed(0);
 
     return (<Wrapper>

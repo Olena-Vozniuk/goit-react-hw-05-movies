@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import PropTypes from 'prop-types';
 import { Wrapper, Item, List } from "./trendingList.styled";
 
 
@@ -24,3 +25,15 @@ const TrendingList = ({ movies }) => {
 };
 
 export default TrendingList;
+
+
+TrendingList.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        release_date: PropTypes.string.isRequired,
+        poster_path: PropTypes.string.isRequired,
+    })
+  ),
+};

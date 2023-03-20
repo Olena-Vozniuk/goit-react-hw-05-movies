@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from 'react-router-dom';
 import apiTheMovie from "../services/fetch-trending-movie";
 import MoviesList from "components/MoviesList/MoviesList";
@@ -14,21 +14,16 @@ const Movies = () => {
     const query = searchParams.get("query") ?? "";
 ;
 
-//     useEffect(() => {
-       
-//    })
-
-    const handleFormSubmit = (evt) => {
-
-        evt.preventDefault();
-         apiTheMovie.fetchSearchMovies(query)
+    useEffect(() => {
+        apiTheMovie.fetchSearchMovies(query)
             .then(newMovies => {
-                if (newMovies.length === 0) {
+                if (query !== '' && newMovies.length === 0) {
                     setError("We don't have any reviews for this movie");
-                } else {
-                    setMovies(prevMovies => [...prevMovies, ...newMovies]);
-                    // setMovies(newMovies);
+                    setMovies();
                 }
+                else {
+                    setMovies(prevMovies => [...prevMovies, ...newMovies]);
+                }    
             })
             .catch(error => {
                 setError(error);
@@ -36,19 +31,24 @@ const Movies = () => {
             }).finally(() => {
                 setIsLoading(false)
             })
+        apiTheMovie.fetchSearchMovies();
         setError("");
+    }, [query]);
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        const query = e.target.elements.query.value;
+       
+        if (query.trim() === '') return setSearchParams({});
+        setSearchParams({ query });
+        
     };   
     
-    const handleInput = (evt) => {
-    const nextParams = evt.target.value !== "" ? { query: evt.target.value } : {};
-    setSearchParams(nextParams);
-    }
-
     return (<Wrapper>
-        <input type="text"
-            value={query}
-            onChange={handleInput} />
-        <button type="submit" onClick={handleFormSubmit}>Search</button>
+        <form onSubmit={handleFormSubmit}>
+        <input type="text" name="query" />
+        <button type="submit">Search</button>
+        </form>
         <MoviesList movies={movies}  />
         {isLoading && <Loader />}
         {error && <p> {error}</p>}
