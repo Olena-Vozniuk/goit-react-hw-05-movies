@@ -31,7 +31,6 @@ const Movies = () => {
             }).finally(() => {
                 setIsLoading(false)
             })
-        apiTheMovie.fetchSearchMovies();
         setError("");
     }, [query]);
 
